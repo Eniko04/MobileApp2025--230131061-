@@ -51,4 +51,4 @@ MovieApp е мобилно приложение за управление на �
 ## 🚀 Стъпки за стартиране
 1. Клонирай репото:
    ```bash
-   git clone https://github.com/<username>/MobileApps2025-<ФН>.git
+   git clone https://github.com/Eniko04/MobileApp2025--230131061-
