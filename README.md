@@ -58,3 +58,8 @@ MovieApp е мобилно приложение за управление на �
 
 <img width="295" height="665" alt="Screenshot 2025-11-08 at 12 26 03" src="https://github.com/user-attachments/assets/78ce1b5d-902c-4db8-bb71-5358458ccb50" />
 
+<img width="297" height="672" alt="Screenshot 2025-11-08 at 12 26 51" src="https://github.com/user-attachments/assets/e4d2921e-5555-441b-b234-04266f3cf675" />
+
+<img width="298" height="666" alt="Screenshot 2025-11-08 at 12 27 10" src="https://github.com/user-attachments/assets/8146c826-e152-4c25-8c3e-8730c04fdbf0" />
+
+<img width="294" height="669" alt="Screenshot 2025-11-08 at 12 27 24" src="https://github.com/user-attachments/assets/2da0e677-ba37-4a64-aa53-38f07c32cf82" />
