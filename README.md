@@ -54,7 +54,7 @@ MovieApp е мобилно приложение за управление на �
    git clone https://github.com/Eniko04/MobileApp2025--230131061-
 
 ---
-## Screenshots
+## 📷 Screenshots
 
 <img width="295" height="665" alt="Screenshot 2025-11-08 at 12 26 03" src="https://github.com/user-attachments/assets/78ce1b5d-902c-4db8-bb71-5358458ccb50" />
 
