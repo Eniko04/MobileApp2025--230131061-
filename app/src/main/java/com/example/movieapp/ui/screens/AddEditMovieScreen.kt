@@ -11,22 +11,29 @@ import com.example.movieapp.data.Movie
 import com.example.movieapp.ui.MovieViewModel
 import kotlinx.coroutines.launch
 
+/**
+ * Екран за добавяне или редакция на филм.
+ * Използва Jetpack Compose и работи заедно с MovieViewModel.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddEditMovieScreen(
-    onBack: () -> Unit,
-    viewModel: MovieViewModel,
-    movieId: Int? = null
+    onBack: () -> Unit,          // функция за връщане назад
+    viewModel: MovieViewModel,   // връзка с ViewModel-а
+    movieId: Int? = null         // ако е подаден — редакция, иначе добавяне
 ) {
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
 
+    // Състояния за въведените данни
     var title by remember { mutableStateOf("") }
     var genre by remember { mutableStateOf("") }
     var expanded by remember { mutableStateOf(false) }
     var selectedRating by remember { mutableStateOf("5") }
 
-    // 🧠 Load existing movie if editing
+    /**
+     * Ако сме в режим "редакция" — зареждаме данните за съответния филм.
+     */
     LaunchedEffect(movieId) {
         if (movieId != null) {
             val movie = viewModel.getMovieById(movieId)
@@ -38,12 +45,13 @@ fun AddEditMovieScreen(
         }
     }
 
+    // Основният layout
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(if (movieId == null) "Add Movie" else "Edit Movie") },
+                title = { Text(if (movieId == null) "Добави филм" else "Редактирай филм") },
                 navigationIcon = {
-                    TextButton(onClick = onBack) { Text("Back") }
+                    TextButton(onClick = onBack) { Text("Назад") }
                 }
             )
         }
@@ -55,23 +63,23 @@ fun AddEditMovieScreen(
                 .padding(20.dp),
             verticalArrangement = Arrangement.spacedBy(14.dp)
         ) {
-            // 📝 Title
+            // 🔤 Поле за заглавие
             OutlinedTextField(
                 value = title,
                 onValueChange = { title = it },
-                label = { Text("Title") },
+                label = { Text("Заглавие") },
                 modifier = Modifier.fillMaxWidth()
             )
 
-            // 🎭 Genre
+            // 🎭 Поле за жанр
             OutlinedTextField(
                 value = genre,
                 onValueChange = { genre = it },
-                label = { Text("Genre") },
+                label = { Text("Жанр") },
                 modifier = Modifier.fillMaxWidth()
             )
 
-            // ⭐ Rating dropdown
+            // ⭐ Dropdown меню за избор на рейтинг (1–10)
             ExposedDropdownMenuBox(
                 expanded = expanded,
                 onExpandedChange = { expanded = !expanded }
@@ -80,7 +88,7 @@ fun AddEditMovieScreen(
                     value = selectedRating,
                     onValueChange = {},
                     readOnly = true,
-                    label = { Text("Rating") },
+                    label = { Text("Рейтинг") },
                     trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
                     modifier = Modifier
                         .menuAnchor()
@@ -105,32 +113,30 @@ fun AddEditMovieScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // 💾 Save / Update
+            // 💾 Записване / Обновяване
             Button(
                 onClick = {
                     scope.launch {
                         if (movieId == null) {
+                            // Добавяне на нов филм
                             viewModel.addMovie(
                                 Movie(title = title, genre = genre, rating = selectedRating)
                             )
                         } else {
+                            // Актуализиране на съществуващ филм
                             viewModel.updateMovie(
                                 Movie(id = movieId, title = title, genre = genre, rating = selectedRating)
                             )
                         }
-                        onBack()
+                        onBack() // връщане към списъка
                     }
                 },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    contentColor = MaterialTheme.colorScheme.onPrimary
-                ),
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(if (movieId == null) "Save Movie" else "Update Movie")
+                Text(if (movieId == null) "Запиши филма" else "Обнови филма")
             }
 
-            // 🗑 Delete
+            // 🗑 Изтриване на филм
             if (movieId != null) {
                 Button(
                     onClick = {
@@ -147,21 +153,21 @@ fun AddEditMovieScreen(
                     ),
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text("Delete Movie")
+                    Text("Изтрий филма")
                 }
             }
 
-            // 📤 Share
+            // 📤 Споделяне на филм чрез Intent
             Button(
                 onClick = {
                     val shareIntent = Intent(Intent.ACTION_SEND).apply {
                         type = "text/plain"
                         putExtra(
                             Intent.EXTRA_TEXT,
-                            "🎬 Check out this movie: $title ($genre) – Rating: $selectedRating/10"
+                            "🎬 Препоръчвам този филм: $title ($genre) – Оценка: $selectedRating/10"
                         )
                     }
-                    context.startActivity(Intent.createChooser(shareIntent, "Share movie via"))
+                    context.startActivity(Intent.createChooser(shareIntent, "Сподели чрез"))
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.secondary,
@@ -169,19 +175,15 @@ fun AddEditMovieScreen(
                 ),
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Share Movie")
+                Text("Сподели филма")
             }
 
-            // ❌ Cancel
+            // ❌ Отказ (връща към предишния екран)
             OutlinedButton(
                 onClick = onBack,
-                colors = ButtonDefaults.outlinedButtonColors(
-                    contentColor = MaterialTheme.colorScheme.onSurface
-                ),
-                border = ButtonDefaults.outlinedButtonBorder,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Cancel")
+                Text("Откажи")
             }
         }
     }

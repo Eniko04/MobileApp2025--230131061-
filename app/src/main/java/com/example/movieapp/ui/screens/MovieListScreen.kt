@@ -17,18 +17,25 @@ import androidx.compose.ui.unit.sp
 import com.example.movieapp.data.Movie
 import com.example.movieapp.ui.MovieViewModel
 
+/**
+ * Основен екран – показва всички филми от базата.
+ * Оттук може да се добавя нов филм, да се редактира съществуващ
+ * или да се отбележи като "любим".
+ */
 @Composable
 fun MovieListScreen(
-    onAddClick: () -> Unit,
-    onMovieClick: (Int) -> Unit,
-    viewModel: MovieViewModel
+    onAddClick: () -> Unit,          // действие при натискане на бутона "+"
+    onMovieClick: (Int) -> Unit,     // отваря екрана за конкретен филм
+    viewModel: MovieViewModel        // достъп до данните чрез ViewModel
 ) {
+    // Слушаме потока от филми (Flow) и го превръщаме в State
     val movies by viewModel.movies.collectAsState()
 
     Scaffold(
         floatingActionButton = {
+            // Плаващ бутон за добавяне на нов филм
             ExtendedFloatingActionButton(
-                text = { Text("Add Movie") },
+                text = { Text("Добави филм") },
                 icon = { Text("＋") },
                 onClick = onAddClick,
                 containerColor = MaterialTheme.colorScheme.primary,
@@ -41,23 +48,25 @@ fun MovieListScreen(
                 .padding(padding)
                 .padding(16.dp)
         ) {
+            // 🕳️ Ако няма филми – показваме съобщение
             if (movies.isEmpty()) {
                 Box(
                     Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "🎞️ No movies yet.\nTap + to start your list!",
+                        text = "🎞️ Все още няма филми.\nНатисни +, за да добавиш!",
                         style = MaterialTheme.typography.titleMedium
                     )
                 }
             } else {
+                // 📜 Изброяваме всеки филм от базата
                 movies.forEach { movie ->
                     Card(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(vertical = 8.dp)
-                            .clickable { onMovieClick(movie.id) }
+                            .clickable { onMovieClick(movie.id) } // натискане -> отваря детайли
                             .shadow(4.dp, RoundedCornerShape(16.dp)),
                         colors = CardDefaults.cardColors(
                             containerColor = MaterialTheme.colorScheme.surface
@@ -71,6 +80,7 @@ fun MovieListScreen(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
+                            // 🎬 Информация за филма
                             Column(Modifier.weight(1f)) {
                                 Text(
                                     text = movie.title,
@@ -79,24 +89,26 @@ fun MovieListScreen(
                                     color = MaterialTheme.colorScheme.onSurface
                                 )
                                 Text(
-                                    text = "Genre: ${movie.genre}",
+                                    text = "Жанр: ${movie.genre}",
                                     fontSize = 14.sp,
                                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
                                 )
                                 Text(
-                                    text = "⭐ Rating: ${movie.rating}/10",
+                                    text = "⭐ Оценка: ${movie.rating}/10",
                                     fontSize = 14.sp,
                                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.9f)
                                 )
                             }
+
+                            // ⭐ Бутона за добавяне в "любими"
                             IconButton(onClick = { viewModel.toggleFavorite(movie) }) {
                                 Icon(
                                     imageVector = if (movie.isFavorite)
                                         Icons.Filled.Star else Icons.Outlined.StarBorder,
-                                    contentDescription = "Favorite",
+                                    contentDescription = "Любим филм",
                                     tint = if (movie.isFavorite)
-                                        MaterialTheme.colorScheme.primary else
-                                        MaterialTheme.colorScheme.outline
+                                        MaterialTheme.colorScheme.primary
+                                    else MaterialTheme.colorScheme.outline
                                 )
                             }
                         }
