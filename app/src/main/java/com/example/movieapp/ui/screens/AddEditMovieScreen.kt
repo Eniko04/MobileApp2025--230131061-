@@ -49,9 +49,9 @@ fun AddEditMovieScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(if (movieId == null) "Добави филм" else "Редактирай филм") },
+                title = { Text(if (movieId == null) "Create" else "Delete") },
                 navigationIcon = {
-                    TextButton(onClick = onBack) { Text("Назад") }
+                    TextButton(onClick = onBack) { Text("Back") }
                 }
             )
         }
@@ -67,7 +67,7 @@ fun AddEditMovieScreen(
             OutlinedTextField(
                 value = title,
                 onValueChange = { title = it },
-                label = { Text("Заглавие") },
+                label = { Text("Title") },
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -75,7 +75,7 @@ fun AddEditMovieScreen(
             OutlinedTextField(
                 value = genre,
                 onValueChange = { genre = it },
-                label = { Text("Жанр") },
+                label = { Text("Genre") },
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -88,7 +88,7 @@ fun AddEditMovieScreen(
                     value = selectedRating,
                     onValueChange = {},
                     readOnly = true,
-                    label = { Text("Рейтинг") },
+                    label = { Text("Raiting") },
                     trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
                     modifier = Modifier
                         .menuAnchor()
@@ -133,7 +133,7 @@ fun AddEditMovieScreen(
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(if (movieId == null) "Запиши филма" else "Обнови филма")
+                Text(if (movieId == null) "Create" else "Update")
             }
 
             // 🗑 Изтриване на филм
@@ -153,7 +153,7 @@ fun AddEditMovieScreen(
                     ),
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text("Изтрий филма")
+                    Text("Delete")
                 }
             }
 
@@ -164,10 +164,10 @@ fun AddEditMovieScreen(
                         type = "text/plain"
                         putExtra(
                             Intent.EXTRA_TEXT,
-                            "🎬 Препоръчвам този филм: $title ($genre) – Оценка: $selectedRating/10"
+                            "🎬 I recommend this movie: $title ($genre) – Raiting: $selectedRating/10"
                         )
                     }
-                    context.startActivity(Intent.createChooser(shareIntent, "Сподели чрез"))
+                    context.startActivity(Intent.createChooser(shareIntent, "Share with"))
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.secondary,
@@ -175,7 +175,7 @@ fun AddEditMovieScreen(
                 ),
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Сподели филма")
+                Text("Share")
             }
 
             // ❌ Отказ (връща към предишния екран)
@@ -183,7 +183,7 @@ fun AddEditMovieScreen(
                 onClick = onBack,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Откажи")
+                Text("Cancle")
             }
         }
     }

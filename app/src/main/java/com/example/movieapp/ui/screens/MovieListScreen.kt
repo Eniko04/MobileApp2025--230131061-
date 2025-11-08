@@ -35,7 +35,7 @@ fun MovieListScreen(
         floatingActionButton = {
             // Плаващ бутон за добавяне на нов филм
             ExtendedFloatingActionButton(
-                text = { Text("Добави филм") },
+                text = { Text("Add") },
                 icon = { Text("＋") },
                 onClick = onAddClick,
                 containerColor = MaterialTheme.colorScheme.primary,
@@ -55,7 +55,8 @@ fun MovieListScreen(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "🎞️ Все още няма филми.\nНатисни +, за да добавиш!",
+                        text = "🎞️ No movies yet.\n" +
+                                "Press + to add!",
                         style = MaterialTheme.typography.titleMedium
                     )
                 }
@@ -89,12 +90,12 @@ fun MovieListScreen(
                                     color = MaterialTheme.colorScheme.onSurface
                                 )
                                 Text(
-                                    text = "Жанр: ${movie.genre}",
+                                    text = "Genre: ${movie.genre}",
                                     fontSize = 14.sp,
                                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
                                 )
                                 Text(
-                                    text = "⭐ Оценка: ${movie.rating}/10",
+                                    text = "⭐ Raiting: ${movie.rating}/10",
                                     fontSize = 14.sp,
                                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.9f)
                                 )
@@ -105,7 +106,7 @@ fun MovieListScreen(
                                 Icon(
                                     imageVector = if (movie.isFavorite)
                                         Icons.Filled.Star else Icons.Outlined.StarBorder,
-                                    contentDescription = "Любим филм",
+                                    contentDescription = "Favorite",
                                     tint = if (movie.isFavorite)
                                         MaterialTheme.colorScheme.primary
                                     else MaterialTheme.colorScheme.outline
